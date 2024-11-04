@@ -1,10 +1,15 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 import amazonLogo from '../assets/amazon-logo.svg';
 import cartIcon from '../assets/cart-shopping-svgrepo-com.svg';
 import searchIcon from '../assets/search-svgrepo-com.svg';
 
 const Header = () => {
+  const cartItems = useSelector((state) => state.cart.items); 
+
+  const totalQuantity = cartItems.reduce((acc, item) => acc + item.quantity, 0);
+
   return (
     <div className="bg-slate-900 text-white flex items-center w-full h-20 px-8">
       <Link to="/" className="flex justify-center items-center">
@@ -17,7 +22,7 @@ const Header = () => {
       </Link>
 
       <div className="flex w-full justify-center">
-        <div className='flex w-1/2'>
+        <div className='hidden sm:flex sm:w-1/2'>
           <input
             type="text"
             placeholder="Search"
@@ -29,7 +34,7 @@ const Header = () => {
 
       <Link to="/cart" className="flex items-center">
         <img src={cartIcon} alt="cart icon" className='h-12 w-12'/>
-        <span className="font-bold">Cart</span>
+        <span className="font-bold">{totalQuantity > 0 ? `(${totalQuantity})` : 'Cart'}</span>
       </Link>
     </div>
   );
